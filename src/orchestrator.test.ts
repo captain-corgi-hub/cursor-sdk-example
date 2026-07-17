@@ -28,6 +28,7 @@ function finding(over: Partial<Finding> = {}): Finding {
     file: "src/a.ts",
     line: 5,
     severity: "low",
+    category: "correctness",
     title: "unused import",
     description: "remove it",
     autofixable: true,
