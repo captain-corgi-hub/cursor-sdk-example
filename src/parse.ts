@@ -1,4 +1,10 @@
-import type { Complexity, Finding, ReviewResult, Severity } from "./types.js";
+import type {
+  Complexity,
+  Finding,
+  FindingCategory,
+  ReviewResult,
+  Severity,
+} from "./types.js";
 
 const START = "<<<CURSOR_REVIEW_JSON>>>";
 const END = "<<<END_CURSOR_REVIEW_JSON>>>";
@@ -143,6 +149,7 @@ function validateFinding(value: unknown, index: number): Finding {
     `finding[${index}].description`,
   );
   const severity = asSeverity(value["severity"], index);
+  const category = asCategory(value["category"], index);
   const autofixable = value["autofixable"];
   if (typeof autofixable !== "boolean") {
     throw new ReviewParseError(`finding[${index}].autofixable must be boolean`);
@@ -155,7 +162,7 @@ function validateFinding(value: unknown, index: number): Finding {
     }
     line = lineRaw;
   }
-  return { id, file, line, severity, title, description, autofixable };
+  return { id, file, line, severity, category, title, description, autofixable };
 }
 
 function asComplexity(value: unknown): Complexity {
@@ -173,6 +180,26 @@ function asSeverity(value: unknown, index: number): Severity {
   }
   throw new ReviewParseError(
     `finding[${index}].severity must be "low" | "medium" | "high"`,
+  );
+}
+
+const VALID_CATEGORIES: FindingCategory[] = [
+  "correctness",
+  "security",
+  "performance",
+  "readability",
+  "maintainability",
+];
+
+function asCategory(value: unknown, index: number): FindingCategory {
+  if (
+    typeof value === "string" &&
+    VALID_CATEGORIES.includes(value as FindingCategory)
+  ) {
+    return value as FindingCategory;
+  }
+  throw new ReviewParseError(
+    `finding[${index}].category must be one of: ${VALID_CATEGORIES.join(", ")}`,
   );
 }
 

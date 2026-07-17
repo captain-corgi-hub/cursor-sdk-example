@@ -2,6 +2,13 @@ export type Severity = "low" | "medium" | "high";
 export type Complexity = "low" | "medium" | "high";
 export type Runtime = "cloud" | "local";
 
+export type FindingCategory =
+  | "correctness"
+  | "security"
+  | "performance"
+  | "readability"
+  | "maintainability";
+
 /**
  * Opt-in PR labels that gate each orchestrator step. A PR must carry the
  * matching label for the corresponding step to run; missing `LABELS.REVIEW`
@@ -22,6 +29,7 @@ export interface Finding {
   file: string;
   line?: number;
   severity: Severity;
+  category: FindingCategory;
   title: string;
   description: string;
   autofixable: boolean;
