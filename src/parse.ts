@@ -220,3 +220,10 @@ function asString(value: unknown, label: string): string {
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
+
+export function filterFindingsByCategory(
+  findings: Finding[],
+  category: FindingCategory,
+): Finding[] {
+  return findings.filter((f) => f.category === category);
+}
