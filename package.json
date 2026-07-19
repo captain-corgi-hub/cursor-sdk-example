@@ -13,7 +13,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@cursor/sdk": "^1.0.10",
+    "@cursor/sdk": "^1.0.23",
     "@octokit/rest": "^22.0.1"
   },
   "devDependencies": {
