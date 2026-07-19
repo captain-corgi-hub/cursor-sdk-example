@@ -23,6 +23,7 @@ function finding(over: Partial<Finding> = {}): Finding {
     file: "src/a.ts",
     line: 10,
     severity: "high",
+    category: "correctness",
     title: "missing null check",
     description: "Should guard against null inputs.",
     autofixable: false,

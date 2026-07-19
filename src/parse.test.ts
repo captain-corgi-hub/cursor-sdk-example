@@ -20,6 +20,7 @@ describe("parseReviewJson", () => {
         file: "src/foo.ts",
         line: 12,
         severity: "low",
+        category: "correctness",
         title: "unused import",
         description: "Remove the unused import to keep the file clean.",
         autofixable: true,
@@ -38,6 +39,7 @@ describe("parseReviewJson", () => {
     assert.equal(result.findings.length, 1);
     assert.equal(result.findings[0]!.id, "F1");
     assert.equal(result.findings[0]!.line, 12);
+    assert.equal(result.findings[0]!.category, "correctness");
   });
 
   it("accepts findings with optional line omitted", () => {
@@ -49,6 +51,7 @@ describe("parseReviewJson", () => {
             id: "F2",
             file: "x.ts",
             severity: "high",
+            category: "readability",
             title: "t",
             description: "d",
             autofixable: false,
@@ -100,6 +103,19 @@ describe("parseReviewJson", () => {
   it("throws on bad complexity value", () => {
     assert.throws(
       () => parseReviewJson(wrap({ ...validReview, complexity: "huge" })),
+      ReviewParseError,
+    );
+  });
+
+  it("throws on bad category value", () => {
+    assert.throws(
+      () =>
+        parseReviewJson(
+          wrap({
+            ...validReview,
+            findings: [{ ...validReview.findings[0], category: "nope" }],
+          }),
+        ),
       ReviewParseError,
     );
   });
