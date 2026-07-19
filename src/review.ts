@@ -136,6 +136,12 @@ Tasks (do them in order):
 5. Mark each finding as \`autofixable: true\` ONLY if it is mechanical and locally fixable
    without changing behavior or design (typos, unused imports, simple refactors, missing null
    checks with obvious fix, lint-style issues). Anything requiring judgment is NOT autofixable.
+6. Classify each finding into exactly one category:
+   - "correctness": logic bugs, wrong behavior, incorrect edge cases
+   - "security": vulnerabilities, injection risks, missing auth checks
+   - "performance": unnecessary allocations, N+1 queries, hot-path inefficiencies
+   - "readability": confusing naming, unclear control flow, missing docs on public API
+   - "maintainability": tight coupling, code duplication, fragile patterns
 
 After completing the review, you MUST emit ONE block at the very end of your final message,
 exactly in this format (no extra commentary after the closing sentinel):
@@ -150,6 +156,7 @@ exactly in this format (no extra commentary after the closing sentinel):
       "file": "path/from/repo/root.ext",
       "line": 42,
       "severity": "low" | "medium" | "high",
+      "category": "correctness" | "security" | "performance" | "readability" | "maintainability",
       "title": "short title",
       "description": "what is wrong and why; one paragraph max",
       "autofixable": true
